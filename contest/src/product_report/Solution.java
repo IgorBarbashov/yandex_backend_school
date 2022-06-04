@@ -34,7 +34,7 @@ public class Solution {
         System.out.println(resultList);
     }
 
-    static private JSONArray readData(Filter filter) {
+    private static JSONArray readData(Filter filter) {
         try (Scanner in = new Scanner(new File("src/product_report/input.txt"))) {
             JSONParser parser = new JSONParser();
             String jsonString = "{\"products\":" + in.nextLine() + "}";
@@ -68,7 +68,7 @@ public class Solution {
         }
     }
 
-    static private boolean validateProductByFilter(JSONObject product, Filter filter) throws java.text.ParseException {
+    private static boolean validateProductByFilter(JSONObject product, Filter filter) throws java.text.ParseException {
         String name = (String) product.get("name");
         int price = ((Long) product.get("price")).intValue();
         String dateString = (String) product.get("date");

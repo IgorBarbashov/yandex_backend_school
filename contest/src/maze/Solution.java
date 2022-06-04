@@ -42,7 +42,7 @@ public class Solution {
         printMaze(maze);
     }
 
-    static private Maze readData() {
+    private static Maze readData() {
         try (Scanner in = new Scanner(new File("src/maze/input.txt"))) {
             String[] measures = in.nextLine().split(" ");
             int N = Integer.parseInt(measures[0]);
@@ -67,7 +67,7 @@ public class Solution {
         }
     }
 
-    static private void printMaze(Maze maze) {
+    private static void printMaze(Maze maze) {
         for (Cell[] ints : maze.field) {
             for (Cell anInt : ints) {
                 System.out.print(anInt.value == '.' ? anInt.direction : anInt.value);
