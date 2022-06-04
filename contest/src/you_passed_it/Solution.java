@@ -18,7 +18,7 @@ public class Solution {
     }
 
     private static HashMap<String, Vacancy> readData() {
-        try (Scanner in = new Scanner(new File("src/you_passed_it/input.txt"));) {
+        try (Scanner in = new Scanner(new File("src/you_passed_it/input.txt"))) {
             HashMap<String, Vacancy> vacancies = new HashMap<>();
 
             int vC = Integer.parseInt(in.nextLine());

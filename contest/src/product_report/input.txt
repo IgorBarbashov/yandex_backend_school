@@ -1,0 +1,6 @@
+[{"id": 2, "name": "Dell notebook", "price": 2200, "date": "11.11.2021"},{"id": 1, "name": "Asus notebook", "price": 2200, "date": "11.11.2021"}]
+NAME_CONTAINS notebook
+PRICE_GREATER_THAN 2000
+PRICE_LESS_THAN 2400
+DATE_BEFORE 12.09.2022
+DATE_AFTER 02.01.2021
