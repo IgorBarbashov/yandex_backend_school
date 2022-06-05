@@ -1,7 +1,6 @@
 package guess_the_word;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class Solution {
 
@@ -16,7 +15,7 @@ public class Solution {
     }
 
     public static void main(String[] args) throws IOException {
-        ArrayList[] alphabet = new ArrayList[ALPHABET_LENGTH];
+        int[] alphabet = new int[ALPHABET_LENGTH];
 
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
         String S = r.readLine();
@@ -32,23 +31,18 @@ public class Solution {
             if (charS == Q.charAt(i)) {
                 result[i] = Coincidence.correct.toString();
             } else {
-                if (alphabet[charIndex] == null) {
-                    ArrayList<Integer> positions = new ArrayList<>();
-                    alphabet[charIndex] = positions;
-                }
-
-                alphabet[charIndex].add(i);
+                alphabet[charIndex]++;
             }
         }
 
         for (int i = 0; i < N; i++) {
-            if(result[i] == null) {
+            if (result[i] == null) {
                 int charQ = Q.charAt(i);
                 int charIndex = charQ - ALPHABET_START_CODE;
 
-                if (alphabet[charIndex] != null && alphabet[charIndex].size() > 0) {
+                if (alphabet[charIndex] != 0) {
                     result[i] = Coincidence.present.toString();
-                    alphabet[charIndex].remove(0);
+                    alphabet[charIndex]--;
                 } else {
                     result[i] = Coincidence.absent.toString();
                 }
