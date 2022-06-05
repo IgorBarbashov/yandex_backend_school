@@ -1,65 +1,7 @@
 package you_passed_it;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
-
-public class Solution {
-
-    public static void main(String[] args) {
-        HashMap<String, Vacancy> vacancies = readData();
-        rateCandidatesPerVacancy(vacancies);
-        ArrayList<Candidate> successfulCandidates = getResultList(vacancies);
-        Collections.sort(successfulCandidates, new CandidateComparatorByName());
-
-        for (Candidate successfulCandidate : successfulCandidates) {
-            System.out.println(successfulCandidate);
-        }
-    }
-
-    private static HashMap<String, Vacancy> readData() {
-        try (Scanner in = new Scanner(new File("src/you_passed_it/input.txt"))) {
-            HashMap<String, Vacancy> vacancies = new HashMap<>();
-
-            int vC = Integer.parseInt(in.nextLine());
-            for (int i = 0; i < vC; i++) {
-                String[] vD = in.nextLine().split(",");
-                Vacancy vacancy = new Vacancy(vD[0], Integer.parseInt(vD[1]));
-                vacancies.put(vD[0], vacancy);
-            }
-
-            int cC = Integer.parseInt(in.nextLine());
-            for (int i = 0; i < cC; i++) {
-                String[] cD = in.nextLine().split(",");
-                Candidate candidate = new Candidate(cD[0], cD[1], Integer.parseInt(cD[2]), Integer.parseInt(cD[3]));
-                vacancies.get(cD[1]).addCandidate(candidate);
-            }
-
-            return vacancies;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void rateCandidatesPerVacancy(HashMap<String, Vacancy> vacancies) {
-        for (Vacancy vacancy : vacancies.values()) {
-            Collections.sort(vacancy.getCandidates(), new CandidateComparatorByGradeAndFine());
-        }
-    }
-
-    private static ArrayList<Candidate> getResultList(HashMap<String, Vacancy> vacancies) {
-        ArrayList<Candidate> successfulCandidates = new ArrayList<>();
-
-        for (Vacancy vacancy : vacancies.values()) {
-            int successfulCandidatesCount = Math.min(vacancy.getAmount(), vacancy.getCandidates().size());
-            for (int i = 0; i < successfulCandidatesCount; i++) {
-                successfulCandidates.add(vacancy.getCandidates().get(i));
-            }
-        }
-
-        return successfulCandidates;
-    }
-}
 
 class Candidate {
     private String name;
@@ -130,5 +72,64 @@ class Vacancy {
 
     public int getAmount() {
         return amount;
+    }
+}
+
+public class Solution {
+
+    public static void main(String[] args) {
+        HashMap<String, Vacancy> vacancies = readData();
+        rateCandidatesPerVacancy(vacancies);
+        ArrayList<Candidate> successfulCandidates = getResultList(vacancies);
+        Collections.sort(successfulCandidates, new CandidateComparatorByName());
+
+        for (Candidate successfulCandidate : successfulCandidates) {
+            System.out.println(successfulCandidate);
+        }
+    }
+
+    private static HashMap<String, Vacancy> readData() {
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(System.in))) {
+            HashMap<String, Vacancy> vacancies = new HashMap<>();
+
+            int vC = Integer.parseInt(r.readLine());
+            for (int i = 0; i < vC; i++) {
+                String[] vD = r.readLine().split(",");
+                Vacancy vacancy = new Vacancy(vD[0], Integer.parseInt(vD[1]));
+                vacancies.put(vD[0], vacancy);
+            }
+
+            int cC = Integer.parseInt(r.readLine());
+            for (int i = 0; i < cC; i++) {
+                String[] cD = r.readLine().split(",");
+                Candidate candidate = new Candidate(cD[0], cD[1], Integer.parseInt(cD[2]), Integer.parseInt(cD[3]));
+                vacancies.get(cD[1]).addCandidate(candidate);
+            }
+
+            return vacancies;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void rateCandidatesPerVacancy(HashMap<String, Vacancy> vacancies) {
+        for (Vacancy vacancy : vacancies.values()) {
+            Collections.sort(vacancy.getCandidates(), new CandidateComparatorByGradeAndFine());
+        }
+    }
+
+    private static ArrayList<Candidate> getResultList(HashMap<String, Vacancy> vacancies) {
+        ArrayList<Candidate> successfulCandidates = new ArrayList<>();
+
+        for (Vacancy vacancy : vacancies.values()) {
+            int successfulCandidatesCount = Math.min(vacancy.getAmount(), vacancy.getCandidates().size());
+            for (int i = 0; i < successfulCandidatesCount; i++) {
+                successfulCandidates.add(vacancy.getCandidates().get(i));
+            }
+        }
+
+        return successfulCandidates;
     }
 }
