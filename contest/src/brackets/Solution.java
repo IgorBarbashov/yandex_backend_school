@@ -1,39 +1,42 @@
 package brackets;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.*;
 
 public class Solution {
     public static void main(String[] args) {
-        try (Scanner in = new Scanner(new File("src/brackets/input.txt"))) {
-            String str = in.nextLine();
-            int p = -1;
+        try (BufferedReader br = new BufferedReader(new FileReader("src/brackets/input.txt"))) {
+            int c;
+            int i = 0;
+            int oP = -1;
+            int cP = -1;
             int count = 0;
 
-            for (int i = 0; i < str.length(); i++) {
-                if (str.charAt(i) == '(') {
+            while ((c = br.read()) != -1) {
+                i++;
+
+                if (c == '(') {
                     if (count == 0) {
-                        p = i + 1;
+                        oP = i;
                     }
                     count++;
                 }
 
-                if (str.charAt(i) == ')') {
+                if (c == ')') {
                     count--;
-                    if (count == 0) {
-                        p = -1;
-                    }
-                }
 
-                if (count == -2) {
-                    p = -1;
-                    break;
+                    if (count == 0 && oP < cP) {
+                        oP = -1;
+                        cP = -1;
+                    } else if (count == -1 && cP == -1) {
+                        cP = i;
+                    }
                 }
             }
 
-            System.out.println(Math.abs(count) == 1 ? p : -1);
+            System.out.println(Math.abs(count) == 1 ? (oP > 0 ? oP : cP > 0 ? cP : -1) : -1);
         } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
