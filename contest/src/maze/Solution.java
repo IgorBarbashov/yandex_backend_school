@@ -1,9 +1,7 @@
 package maze;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Solution {
     public static void main(String[] args) {
@@ -43,14 +41,14 @@ public class Solution {
     }
 
     private static Maze readData() {
-        try (Scanner in = new Scanner(new File("src/maze/input.txt"))) {
-            String[] measures = in.nextLine().split(" ");
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(System.in));) {
+            String[] measures = r.readLine().split(" ");
             int N = Integer.parseInt(measures[0]);
             int M = Integer.parseInt(measures[1]);
             Maze maze = new Maze(N, M);
 
             for (int i = 0; i < N; i++) {
-                String line = in.nextLine();
+                String line = r.readLine();
                 maze.field[i] = new Cell[M];
                 for (int j = 0; j < M; j++) {
                     maze.field[i][j] = new Cell(line.charAt(j));
@@ -63,6 +61,8 @@ public class Solution {
 
             return maze;
         } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
