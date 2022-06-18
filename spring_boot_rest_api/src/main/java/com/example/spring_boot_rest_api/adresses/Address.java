@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 // OneToMany
 // Bi-directional
+// Relation owning side - ???
 @Entity
 public class Address {
     @Id
@@ -19,6 +20,7 @@ public class Address {
 
     // OneToMany
     // Bi-directional
+    // Relation owning side - ???
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH

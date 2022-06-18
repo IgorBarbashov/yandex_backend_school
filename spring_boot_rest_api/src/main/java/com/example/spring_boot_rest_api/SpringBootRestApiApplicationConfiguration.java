@@ -1,10 +1,10 @@
 package com.example.spring_boot_rest_api;
 
 import com.example.spring_boot_rest_api.adresses.Address;
+import com.example.spring_boot_rest_api.grades.Grade;
+import com.example.spring_boot_rest_api.grades.GradeRepository;
 import com.example.spring_boot_rest_api.lessons.Lesson;
-import com.example.spring_boot_rest_api.lessons.LessonRepository;
 import com.example.spring_boot_rest_api.student_updates.StudentUpdate;
-import com.example.spring_boot_rest_api.student_updates.StudentUpdateRepository;
 import com.example.spring_boot_rest_api.students.Student;
 import com.example.spring_boot_rest_api.students.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -22,8 +22,7 @@ public class SpringBootRestApiApplicationConfiguration {
     @Bean
     public CommandLineRunner commandLineRunner(
             StudentRepository studentRepository,
-            StudentUpdateRepository studentUpdateRepository,
-            LessonRepository lessonRepository
+            GradeRepository gradeRepository
     ) {
         Student igor = new Student("Igor", "igor@gmail.com", LocalDate.of(1979, Month.SEPTEMBER, 3));
         Student roma = new Student("Roma", "roma@gmail.com", LocalDate.of(2001, Month.OCTOBER, 12), 1L);
@@ -41,6 +40,10 @@ public class SpringBootRestApiApplicationConfiguration {
         Address address3 = new Address("Address 3");
         Address address4 = new Address("Address 4");
 
+        Grade grade1 = new Grade(5);
+        Grade grade2 = new Grade(3);
+        Grade grade3 = new Grade(4);
+
         igor.setUpdate(lastUpdate);
         ula.setUpdate(beforeLastUpdate);
 
@@ -52,8 +55,13 @@ public class SpringBootRestApiApplicationConfiguration {
         roma.setAddresses(Arrays.asList(address1, address3));
         ula.setAddresses(Arrays.asList(address2, address4));
 
+        grade1.setStudent(roma);
+        grade2.setStudent(roma);
+        grade3.setStudent(ula);
+
         return args -> {
             studentRepository.saveAll(List.of(igor));
+            gradeRepository.saveAll(List.of(grade1, grade2, grade3));
         };
     }
 }

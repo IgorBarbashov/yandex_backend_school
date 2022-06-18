@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 // OneToMany
 // Uni-directional
+// Relation owning side - STUDENT
 @Entity
 public class Lesson {
     @Id

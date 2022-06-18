@@ -43,12 +43,13 @@ public class Student {
 
     // OneToMany
     // Uni-directional
+    // Relation owning side - STUDENT
     @OneToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
                     CascadeType.REFRESH
             })
-    @JoinColumn(
+    @JoinColumn( // without this annotation, Hibernate will create unnecessary connection table to link Student and Lesson
             name = "student_id" // how new column in the LESSON table will be called
     )
     private List<Lesson> lessons = new ArrayList<>();
@@ -64,6 +65,7 @@ public class Student {
 
     // OneToMany
     // Bi-directional
+    // Relation owning side - ???
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
