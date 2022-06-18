@@ -3,6 +3,7 @@ package com.example.spring_boot_rest_api.students;
 import com.example.spring_boot_rest_api.adresses.Address;
 import com.example.spring_boot_rest_api.lessons.Lesson;
 import com.example.spring_boot_rest_api.student_updates.StudentUpdate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -15,8 +16,6 @@ import java.util.List;
 public class Student {
     @Id
     @Column(name = "id")
-    @SequenceGenerator(name = "student_sequence", sequenceName = "student_sequence")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
     private Long id;
 
     @Column(name = "name")
@@ -34,8 +33,17 @@ public class Student {
     @JsonProperty("parent_id")
     private Long parentId;
 
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
+    @JoinColumn(name = "parent")
+    @JsonIgnore
+    private Student parent;
+
     // OneToOne
-    @OneToOne(cascade = CascadeType.ALL)
+    // orphanRemoval = true - delete updateStudent entity from DB
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(
             name = "last_update" // how new column in the STUDENT table will be called
     )
@@ -55,31 +63,35 @@ public class Student {
     private List<Lesson> lessons = new ArrayList<>();
 
     // OneToMany
-    // Uni-directional
+    // Bi-directional
     // Self Join Annotations
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(
-            name = "parent_id" // how new column with self-link in the STUDENT table will be called
-    )
+    // Two methods were added: addChild, removeChild
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Student> children = new ArrayList<>();
 
     // OneToMany
     // Bi-directional
-    // Relation owning side - ???
+    // Relation owning side - ADDRESS
+    // Relation inverse side - STUDENT
+    // mappedBy - used in the annotation of the relation inverse side and set linking-field-name in the owner-side-entity
+    // In the case of bi-directional OneToMany relation, owning side may be only MANY-side
+    // Two methods were added: addAddress, removeAddress
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
     public Student() {
     }
 
-    public Student(String name, String email, LocalDate dateOfBirth, Long parentId) {
+    public Student(Long id, String name, String email, LocalDate dateOfBirth, Long parentId) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.parentId = parentId;
     }
 
-    public Student(String name, String email, LocalDate dateOfBirth) {
+    public Student(Long id, String name, String email, LocalDate dateOfBirth) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
@@ -159,6 +171,52 @@ public class Student {
 
     public int getAge() {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    // OneToMany
+    // Bi-directional
+    // Relation owning side - ADDRESS
+    // Relation inverse side - STUDENT
+    public void addAddress(Address address) {
+        addresses.add(address);
+        address.setStudent(this);
+    }
+
+    // OneToMany
+    // Bi-directional
+    // Relation owning side - ADDRESS
+    // Relation inverse side - STUDENT
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+        address.setStudent(null);
+    }
+
+    // OneToMany
+    // Uni-directional
+    // Self Join Annotations
+    public void addChild(Student student) {
+        children.add(student);
+        student.setParent(this);
+    }
+
+    // OneToMany
+    // Uni-directional
+    // Self Join Annotations
+    public void removeChild(Student student) {
+        children.remove(student);
+        student.setParent(null);
+    }
+
+    // OneToMany
+    // Uni-directional
+    // Self Join Annotations
+    public void setParent(Student parent) {
+        this.parent = parent;
+
+        if (parent == null) {
+            this.parentId = null;
+        }
+        this.parentId = parent.getId();
     }
 
     @Override

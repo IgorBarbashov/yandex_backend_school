@@ -7,7 +7,10 @@ import javax.persistence.*;
 
 // OneToMany
 // Bi-directional
-// Relation owning side - ???
+// Relation owning side - ADDRESS
+// Relation inverse side - STUDENT
+// mappedBy - used in the annotation of the relation inverse side and set linking-field-name in the owner-side-entity
+// In the case of bi-directional OneToMany relation, owning side may be only MANY-side
 @Entity
 public class Address {
     @Id
@@ -20,7 +23,10 @@ public class Address {
 
     // OneToMany
     // Bi-directional
-    // Relation owning side - ???
+    // Relation owning side - ADDRESS
+    // Relation inverse side - STUDENT
+    // mappedBy - used in the annotation of the relation inverse side and set linking-field-name in the owner-side-entity
+    // In the case of bi-directional OneToMany relation, owning side may be only MANY-side
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH

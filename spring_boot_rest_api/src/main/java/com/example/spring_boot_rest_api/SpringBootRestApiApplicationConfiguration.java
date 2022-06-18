@@ -24,9 +24,9 @@ public class SpringBootRestApiApplicationConfiguration {
             StudentRepository studentRepository,
             GradeRepository gradeRepository
     ) {
-        Student igor = new Student("Igor", "igor@gmail.com", LocalDate.of(1979, Month.SEPTEMBER, 3));
-        Student roma = new Student("Roma", "roma@gmail.com", LocalDate.of(2001, Month.OCTOBER, 12), 1L);
-        Student ula = new Student("Ula", "ula@gmail.com", LocalDate.of(2006, Month.JULY, 13), 1L);
+        Student igor = new Student(123L, "Igor", "igor@gmail.com", LocalDate.of(1979, Month.SEPTEMBER, 3));
+        Student roma = new Student(456L, "Roma", "roma@gmail.com", LocalDate.of(2001, Month.OCTOBER, 12), 123L);
+        Student ula = new Student(789L, "Ula", "ula@gmail.com", LocalDate.of(2006, Month.JULY, 13), 123L);
 
         StudentUpdate lastUpdate = new StudentUpdate();
         StudentUpdate beforeLastUpdate = new StudentUpdate();
@@ -50,10 +50,13 @@ public class SpringBootRestApiApplicationConfiguration {
         igor.setLessons(Arrays.asList(englishLesson, franceLesson));
         roma.setLessons(Arrays.asList(chineseLesson));
 
-        igor.setChildren(Arrays.asList(roma, ula));
+        igor.addChild(roma);
+        igor.addChild(ula);
 
-        roma.setAddresses(Arrays.asList(address1, address3));
-        ula.setAddresses(Arrays.asList(address2, address4));
+        roma.addAddress(address1);
+        roma.addAddress(address3);
+        ula.addAddress(address2);
+        ula.addAddress(address4);
 
         grade1.setStudent(roma);
         grade2.setStudent(roma);
