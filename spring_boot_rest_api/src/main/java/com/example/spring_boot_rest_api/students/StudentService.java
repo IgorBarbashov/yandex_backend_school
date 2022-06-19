@@ -1,6 +1,6 @@
 package com.example.spring_boot_rest_api.students;
 
-import com.example.spring_boot_rest_api.response.RestApiException;
+import com.example.spring_boot_rest_api.exception.RestApiInvalidDataException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class StudentService {
 
     public void add(Student student) {
         if (studentRepository.findByEmail(student.getEmail()).isPresent()) {
-            throw new RestApiException("Email is busy");
+            throw new RestApiInvalidDataException();
         }
 
         studentRepository.save(student);

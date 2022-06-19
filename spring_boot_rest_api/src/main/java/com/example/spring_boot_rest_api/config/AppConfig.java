@@ -1,4 +1,4 @@
-package com.example.spring_boot_rest_api;
+package com.example.spring_boot_rest_api.config;
 
 import com.example.spring_boot_rest_api.adresses.Address;
 import com.example.spring_boot_rest_api.grades.Grade;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-public class SpringBootRestApiApplicationConfiguration {
+public class AppConfig {
 
     @Bean
     public CommandLineRunner commandLineRunner(
@@ -25,7 +25,7 @@ public class SpringBootRestApiApplicationConfiguration {
             GradeRepository gradeRepository
     ) {
         Student igor = new Student(123L, "Igor", "igor@gmail.com", LocalDate.of(1979, Month.SEPTEMBER, 3));
-        Student roma = new Student(456L, "Roma", "roma@gmail.com", LocalDate.of(2001, Month.OCTOBER, 12), 123L);
+        Student roma = new Student(456L, "Roma", "roma@gmail.com", LocalDate.of(2001, Month.OCTOBER, 12), 999L);
         Student ula = new Student(789L, "Ula", "ula@gmail.com", LocalDate.of(2006, Month.JULY, 13), 123L);
 
         StudentUpdate lastUpdate = new StudentUpdate();

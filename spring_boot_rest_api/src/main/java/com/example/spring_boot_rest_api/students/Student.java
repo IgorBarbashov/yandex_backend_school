@@ -63,7 +63,7 @@ public class Student {
     private List<Lesson> lessons = new ArrayList<>();
 
     // OneToMany
-    // Bi-directional
+    // Uni-directional
     // Self Join Annotations
     // Two methods were added: addChild, removeChild
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
