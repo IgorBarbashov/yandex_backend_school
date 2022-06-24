@@ -11,6 +11,7 @@ import javax.persistence.*;
 // Relation inverse side - STUDENT
 // mappedBy - used in the annotation of the relation inverse side and set linking-field-name in the owner-side-entity
 // In the case of bi-directional OneToMany relation, owning side may be only MANY-side
+// We should override equals() and hashCode() methods
 @Entity
 public class Address {
     @Id
@@ -27,6 +28,7 @@ public class Address {
     // Relation inverse side - STUDENT
     // mappedBy - used in the annotation of the relation inverse side and set linking-field-name in the owner-side-entity
     // In the case of bi-directional OneToMany relation, owning side may be only MANY-side
+    // We should override equals() and hashCode() methods
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH
@@ -82,5 +84,17 @@ public class Address {
                 ", address='" + address + '\'' +
                 ", student=" + student +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+        return id != null && id.equals(((Address) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

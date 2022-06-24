@@ -24,7 +24,7 @@ public class Student {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "date_of_birth")
+    @Column(name = "date_of_birth", updatable = false)
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
 
@@ -33,13 +33,27 @@ public class Student {
     @JsonProperty("parent_id")
     private Long parentId;
 
-    @ManyToOne(cascade = {
+    // OneToMany
+    // Bi-directional
+    // Self Join Annotations
+    // We should override equals() and hashCode() methods
+    @ManyToOne(
+        fetch = FetchType.LAZY,
+        cascade = {
             CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH
-    })
+        }
+    )
     @JoinColumn(name = "parent")
     @JsonIgnore
     private Student parent;
+
+    // OneToMany
+    // Bi-directional
+    // Self Join Annotations
+    // Two methods were added: addChild, removeChild
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Student> children = new ArrayList<>();
 
     // OneToOne
     // orphanRemoval = true - delete updateStudent entity from DB
@@ -61,13 +75,6 @@ public class Student {
             name = "student_id" // how new column in the LESSON table will be called
     )
     private List<Lesson> lessons = new ArrayList<>();
-
-    // OneToMany
-    // Uni-directional
-    // Self Join Annotations
-    // Two methods were added: addChild, removeChild
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Student> children = new ArrayList<>();
 
     // OneToMany
     // Bi-directional
@@ -210,6 +217,15 @@ public class Student {
     // OneToMany
     // Uni-directional
     // Self Join Annotations
+    public void changeParent(Student newParent) {
+        this.parent.getChildren().remove(this); // TODO - better change this.parent to getter this.getParent()
+        this.setParent(newParent);
+        newParent.getChildren().add(this);
+    }
+
+    // OneToMany
+    // Uni-directional
+    // Self Join Annotations
     public void setParent(Student parent) {
         this.parent = parent;
 
@@ -231,5 +247,17 @@ public class Student {
                 ", lessons=" + lessons +
                 ", children=" + children +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        return id != null && id.equals(((Student) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
