@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
+import java.sql.SQLException;
 
 @ControllerAdvice
 public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -34,4 +35,13 @@ public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandle
         data.setMessage(REST_API_NOT_FOUND_MESSAGE);
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
+
+    // Just test how to handle different Exceptions
+//    @ExceptionHandler()
+//    public ResponseEntity<RestApiErrorResponse> handleException(SQLException e) {
+//        RestApiErrorResponse data = new RestApiErrorResponse();
+//        data.setCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+//        data.setMessage("Unprocessable Entity");
+//        return new ResponseEntity<>(data, HttpStatus.UNPROCESSABLE_ENTITY);
+//    }
 }
