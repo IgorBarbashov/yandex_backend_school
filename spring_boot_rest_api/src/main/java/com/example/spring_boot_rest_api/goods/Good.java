@@ -22,7 +22,8 @@ public class Good {
     private Long amount;
 
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.ORDINAL)
+    private Type type;
 
     @Column(name = "price")
     private Long price;
@@ -39,7 +40,6 @@ public class Good {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonIgnore
     private List<Good> children = new ArrayList<>();
 
     @ManyToOne(
@@ -50,12 +50,13 @@ public class Good {
             }
     )
     @JoinColumn(name = "parent")
+    @JsonIgnore
     private Good parent;
 
     public Good() {
     }
 
-    public Good(String id, String name, Long amount, String type, Long price, String parentId) {
+    public Good(String id, String name, Long amount, Type type, Long price, String parentId) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -88,11 +89,11 @@ public class Good {
         this.amount = amount;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -137,11 +138,11 @@ public class Good {
     public void setParent(Good parent) {
         this.parent = parent;
 
-        if (parent == null) {
-            this.parentId = null;
-        } else {
-            this.parentId = parent.getId();
-        }
+//        if (parent == null) {
+//            this.parentId = null;
+//        } else {
+//            this.parentId = parent.getId();
+//        }
     }
 
     // Service methods

@@ -4,6 +4,7 @@ import com.example.spring_boot_rest_api.adresses.Address;
 import com.example.spring_boot_rest_api.grades.Grade;
 import com.example.spring_boot_rest_api.grades.GradeRepository;
 import com.example.spring_boot_rest_api.lessons.Lesson;
+import com.example.spring_boot_rest_api.mapper.GoodMapper;
 import com.example.spring_boot_rest_api.student_updates.StudentUpdate;
 import com.example.spring_boot_rest_api.students.Student;
 import com.example.spring_boot_rest_api.students.StudentRepository;
@@ -38,6 +39,11 @@ public class AppConfig extends WebMvcConfigurationSupport {
         dateTimeRegistrar.registerFormatters(conversionService);
 
         return conversionService;
+    }
+
+    @Bean
+    public GoodMapper goodMapper() {
+        return new GoodMapper();
     }
 
     @Bean

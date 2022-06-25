@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("v1/goods")
@@ -23,6 +24,11 @@ public class GoodController {
         this.goodService = goodService;
     }
 
+    @GetMapping(path = "items")
+    public List<Good> list() {
+        return goodService.list();
+    }
+
     @PostMapping(path = "item")
     public void add(@Valid @RequestBody Good good, BindingResult bindingResult) {
         logger.info("Validation: " + bindingResult.hasErrors());
@@ -34,22 +40,9 @@ public class GoodController {
         goodService.add(good);
     }
 
-//    @PostMapping(path = "items")
-//    public void add(@Valid @RequestBody List<Good> goods, BindingResult bindingResult) {
-//        logger.info("Validation: " + bindingResult.hasErrors());
-//        if (bindingResult.hasErrors()) {
-//            logger.error("Invalid");
-//            throw new RestApiInvalidDataException();
-//        }
-//        logger.info("After check");
-//        goodService.add(goods);
-//    }
-
     @PostMapping(path = "items")
-//    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//    @Transactional(rollbackFor = Exception.class)
-//    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public void add(@RequestBody GoodListDto goodListDto, BindingResult bindingResult) {
+    @Transactional(rollbackFor = Exception.class)
+    public void add(@Valid @RequestBody GoodListDto goodListDto, BindingResult bindingResult) {
         logger.info("Validation: " + bindingResult.hasErrors());
         if (bindingResult.hasErrors()) {
             logger.error("Invalid");

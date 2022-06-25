@@ -70,9 +70,9 @@ public class GoodDto {
         this.type = type;
     }
 
-    public Long getPrice() {
-        return price.longValue();
-    }
+    public Double getPrice() {
+    return price;
+}
 
     public void setPrice(Double price) {
         this.price = price;
