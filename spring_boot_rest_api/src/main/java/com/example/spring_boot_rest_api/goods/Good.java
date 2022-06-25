@@ -1,11 +1,16 @@
 package com.example.spring_boot_rest_api.goods;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
 @Entity
 @Table(name = "good")
@@ -32,6 +37,7 @@ public class Good {
     private String parentId;
 
     @Column(name = "date")
+    @JsonFormat(shape = STRING, timezone = "UTC")
     private LocalDateTime date;
 
     @OneToMany(
