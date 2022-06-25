@@ -27,7 +27,7 @@ public class Good {
     private Long amount;
 
     @Column(name = "type")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     @Column(name = "price")
@@ -169,20 +169,20 @@ public class Good {
         newParent.getChildren().add(this);
     }
 
-    @Override
-    public String toString() {
-        return "Good{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", amount=" + amount +
-                ", type='" + type + '\'' +
-                ", price=" + price +
-                ", parentId='" + parentId + '\'' +
-                ", date=" + date +
-                ", children=" + children +
-                ", parent=" + parent +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Good{" +
+//                "id='" + id + '\'' +
+//                ", name='" + name + '\'' +
+//                ", amount=" + amount +
+//                ", type='" + type + '\'' +
+//                ", price=" + price +
+//                ", parentId='" + parentId + '\'' +
+//                ", date=" + date +
+//                ", children=" + children +
+//                ", parent=" + parent +
+//                '}';
+//    }
 
     @Override
     public boolean equals(Object o) {

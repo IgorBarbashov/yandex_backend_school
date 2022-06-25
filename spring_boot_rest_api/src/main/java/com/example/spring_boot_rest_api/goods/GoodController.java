@@ -25,6 +25,7 @@ public class GoodController {
     }
 
     @GetMapping(path = "items")
+    @Transactional(rollbackFor = Exception.class)
     public List<Good> list() {
         return goodService.list();
     }
